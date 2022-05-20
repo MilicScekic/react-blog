@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AddPost from './AddPost';
+import Post from './Post';
+import Home from './Home';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+
+const AlertTemplate = ({ style, message, close }) => (
+  <div onClick={close} style={style}>
+    {message}
+  </div>
+);
+const options = {
+  position: positions.TOP_CENTER,
+  timeout: 3000,
+  offset: '10px',
+  transition: transitions.SCALE,
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AlertProvider template={AlertTemplate} {...options}>
+      <div className='container mx-auto px-5 lg:px-[200px]'>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/add-post' element={<AddPost />} />
+            <Route path='/:id' element={<Post />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AlertProvider>
   );
 }
 
